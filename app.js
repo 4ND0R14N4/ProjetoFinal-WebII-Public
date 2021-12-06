@@ -11,61 +11,6 @@ app.use(express.urlencoded({extended: true}));
 app.use(express.json()); 
 
 
-const Usuario = require('./usuario')
-
-
-app.get('/', (req, res) => {
-  //res.render('home')
-})
-
-// Usuario Endpoints
-app.post('/usuario/add', (req, res) => {
-  const data = req.body
-  const nome = data["nome"]
-  const cpf = data["cpf"]
-  const email  = data["email"]
-  const telefone = data["telefone"]
-  const senha = data["senha"]
-  const data_nasc = data["data_nasc"]
-  const u = new Usuario()
-  u.create(nome, cpf, email, telefone, senha, data_nasc).then(function(result){
-    res.status(200).json(result)
-  })
-  console.log("bateu")
-})
-
-app.get('/usuario/read', (req, res) => {
-  const data = req.body
-  const cpf = data["cpf"]
-  const u = new Usuario()
-  u.read(cpf).then(function(result){
-    res.status(200).json(result)
-  })
-})
-
-app.put('/usuario/update', (req, res) => {
-  const data = req.body
-  const nome = data["nome"]
-  const cpf = data["cpf"]
-  const email  = data["email"]
-  const telefone = data["telefone"]
-  const senha = data["senha"]
-  const data_nasc = data["data_nasc"]
-  const u = new Usuario()
-  u.update(nome, cpf, email, telefone, senha, data_nasc).then(function(result){
-    res.status(200).json(result)
-  })
-})
-
-app.delete('/usuario/delete', (req, res) => {
-  const data = req.body
-  const cpf = data["cpf"]
-  const u = new Usuario()
-  u.delete(cpf).then(function(result){
-    res.status(200).json(result)
-  })
-})
-
 // /usuario/login --  POST
 // parametros:
 //    cpf
@@ -106,6 +51,9 @@ app.delete('/usuario/delete', (req, res) => {
 //    cpf
 //    n_quarto
 //  -> retorno: {"success": true, "valor_a_pagar": (numero com o total a pagar)} ou {"success": false} em caso de erro
+
+require("./routes/usuario.routes.js")(app);
+require("./routes/reserva.routes.js")(app);
 
 app.listen(port, () => {
   console.log(`Example app listening at http://localhost:${port}`)
